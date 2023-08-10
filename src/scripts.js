@@ -29,8 +29,20 @@ attackLeftImg.src = 'src/img/attack/attackLeft.png';
 //enemys
 const miniOrcImage = new Image();
 miniOrcImage.src = 'src/img/enemys/miniOrc.png';
+const FlightEyeImage = new Image();
+FlightEyeImage.src = 'src/img/enemys/FlightEye.png';
+const GoblinImage = new Image();
+GoblinImage.src = 'src/img/enemys/Goblin.png';
+const MushroomImage = new Image();
+MushroomImage.src = 'src/img/enemys/Mushroom.png';
+const skeletonImage = new Image();
+skeletonImage.src = 'src/img/enemys/skeleton.png';
 const miniRedImage = new Image();
 miniRedImage.src = 'src/img/enemys/miniRed.png';
+const frankImage = new Image();
+frankImage.src = 'src/img/enemys/frank.png';
+const redImage = new Image();
+redImage.src = 'src/img/enemys/red.png';
 
 //items
 const hpImage = new Image();
@@ -50,7 +62,7 @@ speedBuffImage.src = 'src/img/items/buff5.png';
 const healthBuffImage = new Image();
 healthBuffImage.src = 'src/img/items/heart.png';
 
-const background = new Sprite(7000,6860,backgroundImage,{x:-2560,y:-2026});
+const background = new Sprite(8000,7860,backgroundImage,{x:-2560,y:-2026});
 const selector = new Sprite(42,35,selectorImage,{x:canvas.width/2 - 200,y:canvas.height/2 - 90,});
 const character = new Player(
     75,65,characterImgRight,
@@ -206,71 +218,52 @@ function generateEnemys() {
         switch (options) {
             case 2:
                 if(minutes<1){
-                    enemies[`red${counter}`] = new Enemy(32,56,miniOrcImage,{x:canvas.width, y:randomPositionY},10,1)   
+                    enemies[`FlightEye${counter}`] = new Enemy(120,60,FlightEyeImage,{x:randomPositionX, y:0},10,1);
                 }
                 if(minutes>=1){
                     randomPositionY = Math.floor(Math.random() * canvas.height);
-                    enemies[`miniRed${counter}`] = new Enemy(32,56,miniRedImage,{x:canvas.width, y:randomPositionY},15,2)
-                    /*
+                    enemies[`Goblin${counter}`] = new Enemy(150,65,GoblinImage,{x:canvas.width, y:randomPositionY},15,2);
                     if(minutes>=2){
-                        randomPositionY = Math.floor(Math.random() * canvas.height);
-                        enemies[`orc${counter}`] = new Enemy(39,67,orcImage,{x:canvas.width, y:randomPositionY},20,3)
+                        enemies[`Mushroom${counter}`] = new Enemy(150,67,MushroomImage,{x:canvas.width, y:randomPositionY},20,3);
                         if(minutes>=3){
                             randomPositionY = Math.floor(Math.random() * canvas.height);
                             enemies[`frank${counter}`] = new Enemy(39,67,frankImage,{x:canvas.width, y:randomPositionY},25,3)
                             if(minutes>=4){
                                 randomPositionY = Math.floor(Math.random() * canvas.height);
-                                enemies[`red${counter}`] = new Enemy(48,84,redImage,{x:canvas.width, y:randomPositionY},30,4)
+                                enemies[`red${counter}`] = new Enemy(48,84,redImage,{x:canvas.width, y:randomPositionY},30,4);
                             }
                         }
                     }
-                    */
                 }
                 break;
             case 3:
                 if(minutes<1){
-                    enemies[`red${counter}`] = new Enemy(32,56,miniOrcImage,{x:randomPositionX, y:canvas.height},10,1);
+                    enemies[`miniOrc${counter}`] = new Enemy(32,56,miniOrcImage,{x:randomPositionX, y:canvas.height},10,1);
                 }
                 if(minutes>=1){
                     randomPositionX = Math.floor(Math.random() * canvas.width);
-                    enemies[`miniRed${counter}`] = new Enemy(32,56,miniRedImage,{x:randomPositionX, y:canvas.height},15,2);
-                    /*
+                    enemies[`miniRed${counter}`] = new Enemy(32,56,miniRedImage,{x:randomPositionX, y:canvas.height},15,1);
                     if(minutes>=2){
-                        randomPositionX = Math.floor(Math.random() * canvas.width);
-                        enemies[`orc${counter}`] = new Enemy(39,67,orcImage,{x:randomPositionX, y:canvas.height},20,3);
-                        if(minutes>=3){
-                            randomPositionX = Math.floor(Math.random() * canvas.width);
-                            enemies[`frank${counter}`] = new Enemy(39,67,frankImage,{x:randomPositionX, y:canvas.height},25,3);
-                            if(minutes>=4){
-                                randomPositionX = Math.floor(Math.random() * canvas.width);
-                                enemies[`red${counter}`] = new Enemy(48,84,redImage,{x:randomPositionX, y:canvas.height},30,4);
-                            }
-                        }
+                        randomPositionY = Math.floor(Math.random() * canvas.height);
+                        enemies[`miniOrc${counter}`] = new Enemy(32,56,miniOrcImage,{x:canvas.width, y:randomPositionY},10,1);
                     }
-                    */
                 }
                 break;
             default:
                 if(minutes<1){
-                    enemies[`miniOrc${counter}`] = new Enemy(32,56,miniOrcImage,{x:randomPositionX, y:0},10,1); 
+                    enemies[`miniOrc${counter}`] = new Enemy(32,56,miniOrcImage,{x:randomPositionX, y:0},10,1);
                 }
                 if(minutes>=1){
                     randomPositionX = Math.floor(Math.random() * canvas.width);
                     enemies[`miniRed${counter}`] = new Enemy(32,56,miniRedImage,{x:randomPositionX, y:0},15,2);
-                    /*
-                    if(minutes>2){
+                    if(minutes>=3){
                         randomPositionX = Math.floor(Math.random() * canvas.width);
-                        enemies[`orc${counter}`] = new Enemy(39,67,orcImage,{x:randomPositionX, y:0},20,3);
-                        if(minutes>=3){
+                        enemies[`frank${counter}`] = new Enemy(39,67,frankImage,{x:randomPositionX, y:0},25,3);
+                        if(minutes>=4){
                             randomPositionX = Math.floor(Math.random() * canvas.width);
-                            enemies[`frank${counter}`] = new Enemy(39,67,frankImage,{x:randomPositionX, y:0},25,3);
-                            if(minutes>=4){
-                                randomPositionX = Math.floor(Math.random() * canvas.width);
-                                enemies[`red${counter}`] = new Enemy(48,84,redImage,{x:randomPositionX, y:0},30,4);
-                            }
+                            enemies[`Mushroom${counter}`] = new Enemy(150,67,MushroomImage,{x:randomPositionX, y:0},20,3);
                         }
                     }
-                    */
                 }   
                 break;
         }
@@ -303,53 +296,42 @@ function checkAttackOnEnemy(enemies,attack){
         }
     }
 }
-function checkCollisionOnPlayer(enemy,player){
-    if(enemy.position.x >= player.position.x && enemy.position.x <= player.position.x + player.width){
-        if(enemy.position.y + enemy.height >= player.position.y
-            && enemy.position.y <= player.position.y){
-                player.touched = true;
-                player.stats.pv -= enemy.strenght - (enemy.strenght * player.stats.armor / 100);
-                if (player.stats.pv <= 0){
-                    endGame();
-                } 
-        }else if(enemy.position.y <= player.position.y + player.height && enemy.position.y >= player.position.y){
-                player.touched = true;
-                player.stats.pv -= enemy.strenght - (enemy.strenght * player.stats.armor / 100);
-                if (player.stats.pv <= 0){
-                    endGame(); 
-                } 
-            }
-    }else{
+function checkCollisionOnPlayer(enemy, player, collisionDistance) {
+    const enemyX = enemy.position.x + enemy.width / 2;
+    const enemyY = enemy.position.y + enemy.height / 2;
+    const playerX = player.position.x + player.width / 2;
+    const playerY = player.position.y + player.height / 2;
+    const distance = Math.sqrt(Math.pow(enemyX - playerX, 2) + Math.pow(enemyY - playerY, 2));
+
+    if (distance <= collisionDistance) {
+        player.touched = true;
+        player.stats.pv -= enemy.strenght - (enemy.strenght * player.stats.armor / 100);
+        if (player.stats.pv <= 0){
+            endGame();
+        }
+    } else {
         player.touched = false;
     }
 }
-function checkCollisionWithitems(items,player){
-    for (let item in items){
-        if(player.position.x >= items[item].position.x && player.position.x <= items[item].position.x + items[item].width){
-            if(player.position.y + player.height >= items[item].position.y && player.position.y <= items[item].position.y){
-                if(items[item].type === 'heal'){
-                    items[item].heal(player);
-                    delete items[item];
-                }else{
-                    let isLvlUp = items[item].pex(player);
-                    if(isLvlUp){
-                        skillSelection = "";
-                        lvlUp();
-                    }
-                    delete items[item];
+function checkCollisionWithItems(items, player, pickupRadius) {
+    for (let item in items) {
+        const itemX = items[item].position.x + items[item].width / 2;
+        const itemY = items[item].position.y + items[item].height / 2;
+        const playerX = player.position.x + player.width / 2;
+        const playerY = player.position.y + player.height / 2;
+        const distance = Math.sqrt(Math.pow(itemX - playerX, 2) + Math.pow(itemY - playerY, 2));
+
+        if (distance <= pickupRadius) {
+            if (items[item].type === 'heal') {
+                items[item].heal(player);
+                delete items[item];
+            } else {
+                let isLvlUp = items[item].pex(player);
+                if (isLvlUp) {
+                    skillSelection = "";
+                    lvlUp();
                 }
-            }else if(player.position.y <= items[item].position.y + items[item].height && player.position.y >= items[item].position.y){
-                if(items[item].type === 'heal'){
-                    items[item].heal(player);
-                    delete items[item];
-                }else{
-                    let isLvlUp = items[item].pex(player);
-                    if(isLvlUp){
-                        skillSelection = "";
-                        lvlUp();
-                    }
-                    delete items[item];
-                } 
+                delete items[item];
             }
         }
     }
@@ -495,7 +477,7 @@ function animate(){
         if(keys.left){
             enemies[enemy].position.x += (2 * character.speed);
         }
-        checkCollisionOnPlayer(enemies[enemy],character);
+        checkCollisionOnPlayer(enemies[enemy],character,30);
     }
 
     //Items
@@ -514,7 +496,7 @@ function animate(){
             loots[item].position.x += (2 * character.speed);
         }
     }
-    checkCollisionWithitems(loots,character);
+    checkCollisionWithItems(loots,character,50);
 }
 
 window.addEventListener('keydown', (e)=>{

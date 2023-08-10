@@ -32,7 +32,7 @@ class Player extends Sprite{
         this.stats = {
             pvMax:200,
             pv:200,
-            xpMax:10,
+            xpMax:50,
             xp:0,
             lvl:1,  
             strenght:1,
