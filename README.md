@@ -14,8 +14,8 @@
    git clone https://github.com/yato90/Vs-clone-web.git
    
 2.Перейдите в папку проекта:
-    cd vampire-survivor-clone
-
+   cd vampire-survivor-clone
+   
 3.Откройте файл index.html в вашем веб-браузере:
-    open index.html
+   open index.html
 
