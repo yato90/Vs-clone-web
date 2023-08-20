@@ -25,6 +25,8 @@ const attackRightImg = new Image();
 attackRightImg.src = 'src/img/attack/attackRight.png';
 const attackLeftImg = new Image();
 attackLeftImg.src = 'src/img/attack/attackLeft.png';
+const missleImg = new Image();
+missleImg.src = 'src/img/attack/missle.png';
 
 //enemys
 const miniOrcImage = new Image();
@@ -77,7 +79,11 @@ const swordAttach = new Sword(
         left:attackLeftImg
     },5
 );
+const fireballAttach = new Fireball(
+   50,50,missleImg, 10,1,30
+);
 character.weapons.push(swordAttach);
+character.weapons.push(fireballAttach);
 
 const damageBuff = new DamagesBuff('Лира',damagesBuffImage); 
 const rangeBuff = new RangeBuff('Скрипка',rangeBuffImage);
@@ -106,6 +112,7 @@ let minutesToWrite;
 let intervalTimer;
 
 //other varibes
+let fireballs = [];
 let enemies = {};
 let loots = {};
 let game = {
@@ -186,16 +193,52 @@ function addTimer(){
 function timer() {
     intervalTimer = setTimeout(addTimer, 1000);
 }
+/*
 function drawTimer(){
-    ctx.font = '42px Gothic';
-    ctx.fillStyle = "black";
+    ctx.font = '34px Gothic';
     ctx.textAlign = "center";
+    ctx.fillStyle = "black";
     ctx.fillText(`${minutesToWrite}:${secondsToWrite}`, 1200, 200);
 }
 function drawStats(){
+    ctx.font = '24px Gothic';
+    ctx.fillStyle = "black";
     ctx.fillText(`${character.stats.pv} / ${character.stats.pvMax}`, 1200, 50);
     ctx.fillText(`${character.stats.xp} / ${character.stats.xpMax}`, 1200, 100);
     ctx.fillText(`Lv : ${character.stats.lvl}`, 1200, 150);
+}*/
+function drawTimer() {
+    let gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+    gradient.addColorStop(0, "#FFFF00");
+    gradient.addColorStop(1, "#FFD700");
+    ctx.fillStyle = gradient;
+    ctx.fillRect(1050, 170, 300, 40);
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = "#FF4500";
+    ctx.lineJoin = "round";
+    ctx.strokeRect(1050, 170, 300, 40);
+
+    ctx.font = '34px Gothic';
+    ctx.textAlign = "center";
+    ctx.fillStyle = "black";
+    ctx.fillText(`${minutesToWrite}:${secondsToWrite}`, 1200, 200);
+}
+function drawStats() {
+    let gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+    gradient.addColorStop(0, "#FFFF00");
+    gradient.addColorStop(1, "#FFD700");
+    ctx.fillStyle = gradient;
+    ctx.fillRect(1050, 20, 300, 140);
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = "#FF4500";
+    ctx.lineJoin = "round";
+    ctx.strokeRect(1050, 20, 300, 140);
+
+    ctx.font = '34px Gothic';
+    ctx.fillStyle = "black";
+    ctx.fillText(`${character.stats.pv} / ${character.stats.pvMax}`, 1200, 60);
+    ctx.fillText(`${character.stats.xp} / ${character.stats.xpMax}`, 1200, 100);
+    ctx.fillText(`Lv : ${character.stats.lvl}`, 1200, 140);
 }
 function generateItems(deadBody){
     let idGenerator = Math.floor(Math.random() * 1000);
@@ -270,6 +313,21 @@ function generateEnemys() {
         counter ++;
         if(!game.active){clearInterval(intervalEnemyId);}
     }, 3500);
+}
+function findClosestEnemy(enemies, fireball) {
+    let closestEnemy = null;
+    let closestDistance = Infinity;
+
+    for (let enemy in enemies) {
+        let deltaX = enemies[enemy].position.x - fireball.position.x;
+        let deltaY = enemies[enemy].position.y - fireball.position.y;
+        let distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+        if (distance < closestDistance) {
+            closestDistance = distance;
+            closestEnemy = enemies[enemy];
+        }
+    }
+    return closestEnemy;
 }
 function checkAttackOnEnemy(enemies,attack){
     if(attack.animation){
@@ -457,7 +515,23 @@ function animate(){
     if (currentFrame === swordAttach.animationStart + 15){
         swordAttach.animation = false;
     }
+    if(currentFrame % fireballAttach.frame === 0){;
+        fireballAttach.animation = true;
+        fireballAttach.animationStart = currentFrame;
+    }
+    if (currentFrame === fireballAttach.animationStart + 20){
+        fireballAttach.animation = false;
+    }
     swordAttach.attack();
+    fireballAttach.attack();
+    for (let i = 0; i < fireballs.length; i++) {
+        fireballs[i].attack();
+        let closestEnemy = findClosestEnemy(enemies, fireballs[i]);
+        if (closestEnemy) {
+            fireballs[i].target = closestEnemy;
+        }
+        fireballs[i].update();
+    }
     checkAttackOnEnemy(enemies,swordAttach);
 
     //Enemys
@@ -551,4 +625,4 @@ window.addEventListener('keyup', (e)=>{
             animate();
             break      
     }
-})
+});

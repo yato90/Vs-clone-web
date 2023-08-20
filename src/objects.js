@@ -200,6 +200,71 @@ class Sword extends Weapon{
     }                    
 }
 
+class Fireball extends Weapon{
+    constructor(width,height,shape, speed, damage, radius) {
+        super(width,height,shape);
+        this.position = {x:(character.position.x), y:(character.position.y)}
+        this.speed = speed;
+        this.damage = damage;
+        this.radius = radius;
+        this.active = true;
+        this.target = null;
+        this.frame = 100;
+        this.animation = false;
+        this.animationStart = 0;
+        this.animationEnd = this.animationStart + 20;
+        this.animationFrame = {
+            max :0,
+            right:2,
+            left:0,
+            elapsed:0
+        }
+    }
+    update() {
+        if (this.animation) {
+            if (this.target) {
+                // Вычисляем вектор направления к врагу
+                let dx = this.target.position.x - this.position.x;
+                let dy = this.target.position.y - this.position.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                // Нормализуем вектор направления
+                let directionX = dx / distance;
+                let directionY = dy / distance;
+                // Обновляем позицию огненного шара с учетом скорости и направления
+                this.position.x += directionX * this.speed;
+                this.position.y += directionY * this.speed;
+            }
+        }
+    }
+    attack() {
+        if (this.animation) {
+            this.target = findClosestEnemy(enemies, this); // Найти ближайшего врага
+            if (this.target) {
+                // Вычисляем вектор направления к врагу
+                let dx = this.target.position.x - this.position.x;
+                let dy = this.target.position.y - this.position.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                // Нормализуем вектор направления
+                let directionX = dx / distance;
+                let directionY = dy / distance;
+                // Обновляем позицию огненного шара с учетом скорости и направления
+                this.position.x += directionX * this.speed;
+                this.position.y += directionY * this.speed;
+                // Прорисовываем огненный шар на новой позиции
+                ctx.drawImage(this.shape, this.position.x, this.position.y, this.width, this.height);
+
+                if (this.active) {
+                    checkAttackOnEnemy(enemies, this);
+                }
+                if (this.animationFrame.elapsed % 1000 === 0) { // Пример частоты создания огненных шаров
+                    let newFireball = new Fireball(40, 40, missleImg, 2, 6, 12);
+                    fireballs.push(newFireball);
+                }
+            }
+        }
+    }
+}
+
 class Enemy extends Sprite{
     constructor(height,width,shape,position,pv,strenght){
         super(height,width,shape,position);
